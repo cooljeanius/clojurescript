@@ -12,13 +12,9 @@ jobs:
       uses: actions/checkout@v3.5.0
       with:
         fetch-depth: 1000
-    - uses: actions/setup-node@v3.7.0
-      with:
-        cache: npm
-        node-version: '6'
     - run: wget https://ftp.mozilla.org/pub/firefox/nightly/latest-mozilla-central/jsshell-linux-x86_64.zip
-    - run: unzip jsshell-linux-x86_64.zip -d spidermoney
-    - run: sudo apt-get install -y libjavascriptcoregtk-4.0-bin
+    - run: unzip jsshell-linux-x86_64.zip -d spidermonkey
+    - run: sudo apt-get install -y libjavascriptcoregtk-4.0-bin npm
     - run: wget https://aka.ms/chakracore/cc_linux_x64_1_8_1 -O chakra-core.tar.gz
     - run: tar xvzf chakra-core.tar.gz
     - run: wget https://github.com/oracle/graal/releases/download/vm-1.0.0-rc12/graalvm-ce-1.0.0-rc12-linux-amd64.tar.gz
