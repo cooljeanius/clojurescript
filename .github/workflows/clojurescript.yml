@@ -11,7 +11,7 @@ jobs:
     - name: checkout
       uses: actions/checkout@v3.5.0
       with:
-        fetch-depth: 1000
+        fetch-depth: false
     - run: wget https://ftp.mozilla.org/pub/firefox/nightly/latest-mozilla-central/jsshell-linux-x86_64.zip
     - run: unzip jsshell-linux-x86_64.zip -d spidermonkey
     - run: sudo apt-get update
@@ -40,3 +40,4 @@ jobs:
     - run: grep '0 failures, 0 errors.' test-out.txt
     - run: script/test-cli node | tee test-out.txt
     - run: grep '0 failures, 0 errors.' test-out.txt
+    - run: if test -x "$(which git)"; then git status; else ls -AR; fi
