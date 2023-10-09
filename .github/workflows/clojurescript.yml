@@ -20,7 +20,7 @@ jobs:
     - run: tar xvzf chakra-core.tar.gz
     - run: wget https://github.com/oracle/graal/releases/download/vm-1.0.0-rc12/graalvm-ce-1.0.0-rc12-linux-amd64.tar.gz
     - run: tar xzf graalvm-ce-1.0.0-rc12-linux-amd64.tar.gz
-    - run: if test -e package.json; then npm install; else (find package.json || (if test -x "$(which locate)"; locate package.json; elif test -x "$(which mlocate)"; then mlocate package.json; else ls -AR; fi)); fi
+    - run: if test -e package.json; then npm install; else (find package.json || (if test -x "$(which locate)"; then locate package.json; elif test -x "$(which mlocate)"; then mlocate package.json; else ls -AR; fi)); fi
     - run: script/bootstrap && ls
     - run: script/uberjar && ls
     - run: mkdir -p builds/out-adv
