@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: DeLaGuardo/setup-clojure@3.1
+      - uses: DeLaGuardo/setup-clojure@12.1
         with:
           tools-deps: '1.10.1.763'
 
@@ -61,7 +61,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: DeLaGuardo/setup-clojure@3.5
+      - uses: DeLaGuardo/setup-clojure@12.1
         with:
           cli: '1.10.1.763'
 
@@ -82,7 +82,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: DeLaGuardo/setup-clojure@3.1
+      - uses: DeLaGuardo/setup-clojure@12.1
         with:
           tools-deps: '1.10.1.763'
 
@@ -121,7 +121,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: DeLaGuardo/setup-clojure@3.1
+      - uses: DeLaGuardo/setup-clojure@12.1
         with:
           tools-deps: '1.10.1.763'
 
@@ -160,7 +160,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: DeLaGuardo/setup-clojure@3.1
+      - uses: DeLaGuardo/setup-clojure@12.1
         with:
           tools-deps: '1.10.1.763'
 
@@ -194,7 +194,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: DeLaGuardo/setup-clojure@3.5
+      - uses: DeLaGuardo/setup-clojure@12.1
         with:
           cli: '1.10.1.763'
 
@@ -211,7 +211,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: DeLaGuardo/setup-clojure@3.1
+      - uses: DeLaGuardo/setup-clojure@12.1
         with:
           tools-deps: '1.10.1.763'
 
