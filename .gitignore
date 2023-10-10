@@ -37,3 +37,4 @@ resources/brepl_client.js
 *.jar
 .env.local
 log/valet-*.log
+*.tar.gz
