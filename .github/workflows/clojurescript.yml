@@ -19,7 +19,6 @@ jobs:
       with:
         lein: latest
         boot: latest
-        tool-deps: latest
         cli: latest
         bb: latest
         clj-kondo: latest
@@ -29,7 +28,7 @@ jobs:
     - run: wget https://ftp.mozilla.org/pub/firefox/nightly/latest-mozilla-central/jsshell-linux-x86_64.zip
     - run: unzip jsshell-linux-x86_64.zip -d spidermonkey
     - run: sudo apt-get update
-    - run: sudo apt-get install -y --fix-missing libjavascriptcoregtk-4.0-bin npm mlocate findutils
+    - run: sudo apt-get install -y --fix-missing libjavascriptcoregtk-4.0-bin npm mlocate findutils clojure
     - run: wget https://aka.ms/chakracore/cc_linux_x64_1_8_1 -O chakra-core.tar.gz
     - run: tar xvzf chakra-core.tar.gz
     - run: wget https://github.com/oracle/graal/releases/download/vm-1.0.0-rc12/graalvm-ce-1.0.0-rc12-linux-amd64.tar.gz
@@ -55,3 +54,4 @@ jobs:
     - run: script/test-cli node | tee test-out.txt
     - run: grep '0 failures, 0 errors.' test-out.txt
     - run: if test -x "$(which git)"; then git status; else ls -AR; fi
+      if: "${{ failure() }}"
