@@ -12,6 +12,10 @@ jobs:
       uses: actions/checkout@v3.5.0
       with:
         fetch-depth: false
+    - name: Setup Clojure
+      # You may pin to the exact commit or the version.
+      # uses: DeLaGuardo/setup-clojure@0fc99a3bcdd086349bfb01a9262382fe3d37cd6d
+      uses: DeLaGuardo/setup-clojure@12.1
     - run: wget https://ftp.mozilla.org/pub/firefox/nightly/latest-mozilla-central/jsshell-linux-x86_64.zip
     - run: unzip jsshell-linux-x86_64.zip -d spidermonkey
     - run: sudo apt-get update
