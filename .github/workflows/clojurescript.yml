@@ -19,6 +19,7 @@ jobs:
       with:
         lein: latest
         boot: latest
+        tools-deps: 1.10.1.763
         cli: latest
         bb: latest
         clj-kondo: latest
