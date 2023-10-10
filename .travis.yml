@@ -11,7 +11,7 @@ node_js:
 
 before_install:
   - wget https://ftp.mozilla.org/pub/firefox/nightly/latest-mozilla-central/jsshell-linux-x86_64.zip
-  - unzip jsshell-linux-x86_64.zip -d spidermoney
+  - unzip jsshell-linux-x86_64.zip -d spidermonkey
   - add-apt-repository --help
   - sudo add-apt-repository -y ppa:jonathonf/lisp
   - sudo apt update
@@ -54,7 +54,7 @@ script:
   - lein test
   - jsc builds/out-adv/core-advanced-test.js | tee test-out.txt
   - grep '0 failures, 0 errors.' test-out.txt
-  - ./spidermoney/js -f builds/out-adv/core-advanced-test.js | tee test-out.txt
+  - ./spidermonkey/js -f builds/out-adv/core-advanced-test.js | tee test-out.txt
   - grep '0 failures, 0 errors.' test-out.txt
   - ./ChakraCoreFiles/bin/ch builds/out-adv/core-advanced-test.js | tee test-out.txt
   - grep '0 failures, 0 errors.' test-out.txt
