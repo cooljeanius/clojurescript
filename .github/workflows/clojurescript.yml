@@ -16,6 +16,16 @@ jobs:
       # You may pin to the exact commit or the version.
       # uses: DeLaGuardo/setup-clojure@0fc99a3bcdd086349bfb01a9262382fe3d37cd6d
       uses: DeLaGuardo/setup-clojure@12.1
+      with:
+        lein: latest
+        boot: latest
+        tool-deps: latest
+        cli: latest
+        bb: latest
+        clj-kondo: latest
+        cljfmt: latest
+        cljstyle: latest
+        zprint: latest
     - run: wget https://ftp.mozilla.org/pub/firefox/nightly/latest-mozilla-central/jsshell-linux-x86_64.zip
     - run: unzip jsshell-linux-x86_64.zip -d spidermonkey
     - run: sudo apt-get update
