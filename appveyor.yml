@@ -43,8 +43,8 @@ install:
   - cmd: set PATH=C:\msys64\usr\bin;C:\msys64\mingw64\bin;%PATH%
   - cmd: appveyor DownloadFile "https://raw.githubusercontent.com/swig/cccl/master/cccl"
   - cmd: call "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%
-  - cmd: bash -cvx "if test -x \"$(which appveyor-retry)\" && test -x \"$(which pacman)\" && test -n \"$(ls m*.db*)\"; then (appveyor-retry pacman -Syuu --needed --noconfirm --noprogressbar --ask=127) && (appveyor-retry pacman -S --noconfirm clojure leiningen); fi
-  - cmd: bash -cvx "if test -x \"$(which choco)\"; then choco install leiningen; elif test -x \"$(which scoop)\"; then (scoop bucket add main && scoop install main/leiningen); fi
+  - cmd: bash -cvx "if test -x \"$(which appveyor-retry 2>/dev/null)\" && test -x \"$(which pacman)\" && test -n \"$(ls m*.db*)\"; then (appveyor-retry pacman -Syuu --needed --noconfirm --noprogressbar --ask=127) && (appveyor-retry pacman -S --noconfirm clojure leiningen); fi
+  - cmd: bash -cvx "if test -x \"$(which choco)\"; then choco update; (choco install leiningen || choco install --pre leiningen); elif test -x \"$(which scoop)\"; then (scoop bucket add main && scoop install main/leiningen); fi
 
 test_script:
   - cmd: bash -cvx "lein test || lein test-all || mvn test || mvn test-compile || mvn generate-test-sources || mvn process-test-sources || mvn generate-test-resources || mvn process-test-resources || mvn process-test-classes || mvn pre-integration-test || mvn integration-test || mvn post-integration-test || mvn verify || lein check || lein check-all || lein compile || lein javac || lein retest"
