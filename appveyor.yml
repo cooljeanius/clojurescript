@@ -29,7 +29,9 @@ install:
       lein self-install
 
       lein version
-  - cmd: bash -cvx "if test ! -e scripts/lein.bat; then wget 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein.bat' -O scripts/lein.bat; lein self-install; lein version; fi"
+  - cmd: bash -cvx "if test ! -e scripts/lein.bat; then if test -x \"$(which wget)\"; then wget 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein.bat' -O scripts/lein.bat; elif test -x \"$(which curl)\"; then curl 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein.bat' -o scripts/lein.bat; fi; lein self-install; lein version; fi"
+  - cmd: call "scripts\lein.bat" self-install
+  - cmd: lein version
   - ps: Install-Product node $env:nodejs_version x64
   - ps: wget 'http://ftp.mozilla.org/pub/firefox/nightly/latest-mozilla-central/jsshell-win64.zip' -OutFile "$pwd\jsshell.zip"
   - ps: 7z x "-o$pwd\jsshell" jsshell.zip -r
