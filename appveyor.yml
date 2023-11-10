@@ -43,8 +43,7 @@ install:
   - cmd: set PATH=C:\msys64\usr\bin;C:\msys64\mingw64\bin;%PATH%
   - cmd: appveyor DownloadFile "https://raw.githubusercontent.com/swig/cccl/master/cccl"
   - cmd: call "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%
-  - cmd: appveyor-retry pacman -Syuu --needed --noconfirm --noprogressbar --ask=127
-  - cmd: appveyor-retry pacman -S --noconfirm clojure leiningen
+  - cmd: bash -cvx "if test -x \"$(which appveyor-retry)\" && test -x \"$(which pacman)\" && test -n \"$(ls m*.db*)\"; then (appveyor-retry pacman -Syuu --needed --noconfirm --noprogressbar --ask=127) && (appveyor-retry pacman -S --noconfirm clojure leiningen); fi
   - cmd: bash -cvx "if test -x \"$(which choco)\"; then choco install leiningen; elif test -x \"$(which scoop)\"; then (scoop bucket add main && scoop install main/leiningen); fi
 
 test_script:
