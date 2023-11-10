@@ -2,6 +2,9 @@
 
 set -e
 
+# These variables are also used in the corresponding bootstrap.ps1 PowerShell
+# script; remember to update that if you ever need to remove or add new variables
+# here:
 CLOJURE_RELEASE="1.9.0"
 SPEC_ALPHA_RELEASE="0.1.143"
 CORE_SPECS_ALPHA_RELEASE="0.1.24"
@@ -55,7 +58,7 @@ if [ "$1" = "--closure-library-head" ] ; then
         cd ..
     else
         echo "Checking out HEAD of Google Closure library..."
-        rm -rf *
+        rm -rf ./*
         git clone https://github.com/google/closure-library
     fi
 else
@@ -73,12 +76,12 @@ cd ../..
 echo "Fetching Google Closure compiler..."
 if [ "$1" = "--closure-compiler-snapshot" ] ; then
     curl --retry 3 -O -s https://oss.sonatype.org/content/repositories/snapshots/com/google/javascript/closure-compiler/1.0-SNAPSHOT/maven-metadata.xml || { echo "Download failed."; exit 1; }
-    CC_JAR_VERSION=`grep value maven-metadata.xml | head -1 | awk -F '[<>]' '/value/{print $3}'`
+    CC_JAR_VERSION=$(grep value maven-metadata.xml | head -1 | awk -F '[<>]' '/value/{print $3}')
     CC_JAR_NAME=closure-compiler-$CC_JAR_VERSION.jar
-    curl --retry 3 -O -s https://oss.sonatype.org/content/repositories/snapshots/com/google/javascript/closure-compiler/1.0-SNAPSHOT/$CC_JAR_NAME || { echo "Download failed."; exit 1; }
-    cp $CC_JAR_NAME lib/$CC_JAR_NAME
+    curl --retry 3 -O -s https://oss.sonatype.org/content/repositories/snapshots/com/google/javascript/closure-compiler/1.0-SNAPSHOT/"${CC_JAR_NAME}" || { echo "Download failed."; exit 1; }
+    cp "${CC_JAR_NAME}" lib/"${CC_JAR_NAME}"
     echo "Cleaning up closure-compiler.jar..."
-    rm $CC_JAR_NAME
+    rm "${CC_JAR_NAME}"
     rm maven-metadata.xml
 else
     curl --retry 3 -O -s https://repo1.maven.org/maven2/com/google/javascript/closure-compiler/v$CLOSURE_RELEASE/closure-compiler-v$CLOSURE_RELEASE.jar || { echo "Download failed."; exit 1; }
@@ -114,5 +117,8 @@ curl --retry 3 -O -s https://repo1.maven.org/maven2/org/clojure/test.check/$TEST
 
 echo "Moving test.check.jar to lib/test.check.jar"
 mv test.check-$TEST_CHECK_RELEASE.jar lib/test.check.jar
+
+export DJSON_RELEASE
+export TRANSIT_RELEASE
 
 echo "[Bootstrap Completed]"
