@@ -44,9 +44,9 @@ install:
   - cmd: set PATH=C:\msys64\usr\bin;C:\msys64\mingw64\bin;%PATH%
   - cmd: appveyor DownloadFile "https://raw.githubusercontent.com/swig/cccl/master/cccl"
   - cmd: call "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%
-  - cmd: bash -cvx "if test -x \"$(which appveyor-retry 2>/dev/null)\" && test -x \"$(which pacman)\" && test -n \"$(ls m*.db*)\"; then (appveyor-retry pacman -Syuu --needed --noconfirm --noprogressbar --ask=127) && (appveyor-retry pacman -S --noconfirm clojure leiningen); fi
-  - cmd: bash -cvx "if test -x \"$(which choco)\"; then (choco update || choco upgrade); (choco install leiningen || choco install --pre leiningen); elif test -x \"$(which scoop)\"; then (scoop bucket add main && scoop install main/leiningen); fi
-  - cmd: bash -cvx "if (test ! -e \"$(which lein 2>/dev/null)\" || test ! -x \"$(which lein)\") && test -x \"$(which scoop 2>/dev/null)\"; then (scoop bucket add main && scoop install main/leiningen); fi
+  - cmd: bash -cvx "if test -x \"$(which appveyor-retry 2>/dev/null)\" && test -x \"$(which pacman)\" && test -n \"$(ls m*.db*)\"; then (appveyor-retry pacman -Syuu --needed --noconfirm --noprogressbar --ask=127) && (appveyor-retry pacman -S --noconfirm clojure leiningen); fi"
+  - cmd: bash -cvx "if test -x \"$(which choco)\"; then (choco update || choco upgrade); (choco install leiningen || choco install --pre leiningen); elif test -x \"$(which scoop)\"; then (scoop bucket add main && scoop install main/leiningen); fi"
+  - cmd: bash -cvx "if (test ! -e \"$(which lein 2>/dev/null)\" || test ! -x \"$(which lein)\") && test -x \"$(which scoop 2>/dev/null)\"; then (scoop bucket add main && scoop install main/leiningen); fi"
 
 test_script:
   - cmd: set PATH=C:\msys64\usr\bin;C:\msys64\mingw64\bin;%PATH%
