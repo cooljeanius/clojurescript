@@ -29,6 +29,7 @@ install:
       lein self-install
 
       lein version
+  - cmd: bash -cvx "if test ! -e scripts/lein.bat; then wget 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein.bat' -O scripts/lein.bat; lein self-install; lein version; fi"
   - ps: Install-Product node $env:nodejs_version x64
   - ps: wget 'http://ftp.mozilla.org/pub/firefox/nightly/latest-mozilla-central/jsshell-win64.zip' -OutFile "$pwd\jsshell.zip"
   - ps: 7z x "-o$pwd\jsshell" jsshell.zip -r
@@ -50,7 +51,7 @@ install:
 test_script:
   - cmd: set PATH=C:\msys64\usr\bin;C:\msys64\mingw64\bin;%PATH%
   - cmd: call "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%
-  - cmd: bash -cvx "echo \"${PATH}\""
+  - cmd: bash -cvx "export PATH=/msys64/usr/bin:/msys64/mingw64/bin; echo \"${PATH}\""
   - cmd: bash -cvx "lein test || lein test-all || mvn test || mvn test-compile || mvn generate-test-sources || mvn process-test-sources || mvn generate-test-resources || mvn process-test-resources || mvn process-test-classes || mvn pre-integration-test || mvn integration-test || mvn post-integration-test || mvn verify || lein check || lein check-all || lein compile || lein javac || lein retest || (if test -x \"$(which locate)\"; then locate lein; fi)"
   - cmd: powershell -noninteractive -noprofile -command .\script\test.ps1 > test-out.txt
   - cmd: type test-out.txt
