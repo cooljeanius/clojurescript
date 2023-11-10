@@ -42,7 +42,7 @@ install:
   - ps: $CHAKRACORE_HOME = "$pwd/chakra-core/x64_release"
 
 test_script:
-  - cmd: bash -cvx "lein test || mvn test || mvn test-compile"
+  - cmd: bash -cvx "lein test || lein test-all || mvn test || mvn test-compile || mvn generate-test-sources || mvn process-test-sources || mvn generate-test-resources || mvn process-test-resources || mvn process-test-classes || mvn pre-integration-test || mvn integration-test || mvn post-integration-test || mvn verify || lein check || lein check-all || lein compile || lein javac || lein retest"
   - cmd: powershell -noninteractive -noprofile -command .\script\test.ps1 > test-out.txt
   - cmd: type test-out.txt
   # Since tests are currently only run in 2 JavaScript environments, look for exactly 2 counts of "0 failures, 0 errors."
