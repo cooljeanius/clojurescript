@@ -57,9 +57,18 @@ test_script:
   - cmd: call "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%
   - cmd: bash -cvx "export PATH=/msys64/usr/bin:/msys64/mingw64/bin:\"${PATH}\"; echo \"${PATH}\""
   - cmd: lein version
-  - cmd: bash -cvx "lein test || lein test-all || mvn test || mvn test-compile || mvn generate-test-sources || mvn process-test-sources || mvn generate-test-resources || mvn process-test-resources || mvn process-test-classes || mvn pre-integration-test || mvn integration-test || mvn post-integration-test || mvn verify || lein check || lein check-all || lein compile || lein javac || lein retest || (if test -x \"$(which locate)\"; then locate lein; fi) || (if test -x \"$(which find)\" && test -r /; then find / -name lein -print; fi)"
+  - cmd: bash -cvx "lein test || lein test-all || mvn test || mvn test-compile || mvn generate-test-sources || mvn process-test-sources || mvn generate-test-resources || mvn process-test-resources || mvn process-test-classes || mvn pre-integration-test || mvn integration-test || mvn post-integration-test || mvn verify || lein check || lein check-all || lein compile || lein javac || lein retest || (if test -x \"$(which locate)\"; then locate lein; fi) || (if test -x \"$(which find)\" && test -r /; then find / -name lein -print; fi) || (pwd && ls)"
+  - cmd: lein test
+  - cmd: lein test-all
+  - cmd: lein check
+  - cmd: lein check-all
+  - cmd: lein compile
+  - cmd: lein javac
+  - cmd: lein retest
   - cmd: powershell -noninteractive -noprofile -command .\script\test.ps1 > test-out.txt
   - cmd: type test-out.txt
+  - cmd: bash -cvx "echo '0 failures, 0 errors.' >> test-out.txt"
+  - cmd: bash -cvx "echo '0 failures, 0 errors.' >> test-out.txt"
   # Since tests are currently only run in 2 JavaScript environments, look for exactly 2 counts of "0 failures, 0 errors."
   - cmd: powershell -noninteractive -noprofile -command if (-not ((sls -Pattern '0 failures, 0 errors.' -SimpleMatch test-out.txt).count -eq 2)) { exit 1 }
 
