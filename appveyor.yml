@@ -29,8 +29,8 @@ install:
       lein self-install
 
       lein version
-  - cmd: bash -cvx "if test ! -e scripts/lein.bat; then if test ! -d scripts; then mkdir scripts; fi; if test -x \"$(which wget 2>/dev/null)\"; then wget 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein.bat' -O scripts/lein.bat; elif test -x \"$(which curl)\"; then curl 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein.bat' -o scripts/lein.bat; fi; lein self-install; lein version; fi"
-  - cmd: call "scripts\lein.bat" self-install
+  - cmd: bash -cvx "if test ! -e scripts/lein.bat; then if test ! -d scripts; then mkdir scripts || (if test -x \"$(which gmkdir)\"; then gmkdir scripts; fi); fi; if test -x \"$(which wget 2>/dev/null)\"; then wget 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein.bat' -O scripts/lein.bat; elif test -x \"$(which curl)\"; then (curl 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein.bat' -o scripts/lein.bat) || (curl 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein.bat' -o lein.bat); fi; lein self-install; lein version; fi"
+  - cmd: call "C:\scripts\lein.bat" self-install
   - cmd: lein version
   - ps: Install-Product node $env:nodejs_version x64
   - ps: wget 'http://ftp.mozilla.org/pub/firefox/nightly/latest-mozilla-central/jsshell-win64.zip' -OutFile "$pwd\jsshell.zip"
