@@ -36,3 +36,4 @@ package-lock.json
 resources/brepl_client.js
 *.jar
 .env.local
+log/*.log

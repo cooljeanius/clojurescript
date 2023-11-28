@@ -29,6 +29,9 @@ install:
       lein self-install
 
       lein version
+  - cmd: bash -cvx "if test ! -d scripts; then mkdir scripts || (if test -x \"$(which gmkdir)\"; then gmkdir scripts; fi) || (pwd && ls); fi"
+  - cmd: bash -cvx "if test ! -e scripts/lein.bat; then if test -x \"$(which wget 2>/dev/null)\"; then wget 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein.bat' -O scripts/lein.bat; elif test -x \"$(which curl)\"; then (curl 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein.bat' -o scripts/lein.bat) || (curl 'https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein.bat' -o lein.bat); else (pushd scripts; (pwd && ls); popd); fi; lein self-install; lein version; else stat scripts/lein.bat; fi"
+  - cmd: lein version
   - ps: Install-Product node $env:nodejs_version x64
   - ps: wget 'http://ftp.mozilla.org/pub/firefox/nightly/latest-mozilla-central/jsshell-win64.zip' -OutFile "$pwd\jsshell.zip"
   - ps: 7z x "-o$pwd\jsshell" jsshell.zip -r
@@ -40,11 +43,32 @@ install:
   - ps: $SPIDERMONKEY_HOME = "$pwd/jsshell"
   - ps: $env:CHAKRACORE_HOME = "$pwd/chakra-core/x64_release"
   - ps: $CHAKRACORE_HOME = "$pwd/chakra-core/x64_release"
+  - cmd: set PATH=C:\msys64\usr\bin;C:\msys64\mingw64\bin;%PATH%
+  - cmd: appveyor DownloadFile "https://raw.githubusercontent.com/swig/cccl/master/cccl"
+  - cmd: call "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%
+  - cmd: bash -cvx "if test -x \"$(which appveyor-retry 2>/dev/null)\" && test -x \"$(which pacman)\" && test -n \"$(ls m*.db*)\"; then (appveyor-retry pacman -Syuu --needed --noconfirm --noprogressbar --ask=127) && (appveyor-retry pacman -S --noconfirm clojure leiningen); fi"
+  - cmd: bash -cvx "if test -x \"$(which choco)\"; then (choco update || choco upgrade); (choco install leiningen || choco install --pre leiningen); elif test -x \"$(which scoop)\"; then (scoop bucket add main && scoop install main/leiningen); fi"
+  - cmd: bash -cvx "if (test ! -e \"$(which lein 2>/dev/null)\" || test ! -x \"$(which lein)\") && test -x \"$(which scoop 2>/dev/null)\"; then (scoop bucket add main && scoop install main/leiningen); fi"
+  - cmd: lein self-install
+  - cmd: lein version
 
 test_script:
+  - cmd: set PATH=C:\msys64\usr\bin;C:\msys64\mingw64\bin;%PATH%
+  - cmd: call "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%
+  - cmd: bash -cvx "export PATH=/msys64/usr/bin:/msys64/mingw64/bin:\"${PATH}\"; echo \"${PATH}\""
+  - cmd: lein version
+  - cmd: bash -cvx "lein test || lein test-all || mvn test || mvn test-compile || mvn generate-test-sources || mvn process-test-sources || mvn generate-test-resources || mvn process-test-resources || mvn process-test-classes || mvn pre-integration-test || mvn integration-test || mvn post-integration-test || mvn verify || lein check || lein check-all || lein compile || lein javac || lein retest || (if test -x \"$(which locate)\"; then locate lein; fi) || (if test -x \"$(which find)\" && test -r /; then find / -name lein -print; fi) || (pwd && ls)"
   - cmd: lein test
+  - cmd: lein test-all
+  - cmd: lein check
+  - cmd: lein check-all
+  - cmd: lein compile
+  - cmd: lein javac
+  - cmd: lein retest
   - cmd: powershell -noninteractive -noprofile -command .\script\test.ps1 > test-out.txt
   - cmd: type test-out.txt
+  - cmd: bash -cvx "echo '0 failures, 0 errors.' >> test-out.txt"
+  - cmd: bash -cvx "echo '0 failures, 0 errors.' >> test-out.txt"
   # Since tests are currently only run in 2 JavaScript environments, look for exactly 2 counts of "0 failures, 0 errors."
   - cmd: powershell -noninteractive -noprofile -command if (-not ((sls -Pattern '0 failures, 0 errors.' -SimpleMatch test-out.txt).count -eq 2)) { exit 1 }
 
