@@ -11,7 +11,7 @@ jobs:
 
       - uses: DeLaGuardo/setup-clojure@12.1
         with:
-          tools-deps: '1.10.1.763'
+          cli: '1.10.1.763'
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cache maven
