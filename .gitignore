@@ -36,4 +36,5 @@ package-lock.json
 resources/brepl_client.js
 *.jar
 .env.local
-log/*.log
+log/valet-*.log
+*.tar.gz
