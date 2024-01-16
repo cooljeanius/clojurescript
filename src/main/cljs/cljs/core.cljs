@@ -1315,7 +1315,6 @@
          (= y (first more)))
        false)))
 
-;; EXPERIMENTAL: subject to change
 (deftype ES6Iterator [^:mutable s]
   Object
   (next [_]
@@ -1326,7 +1325,7 @@
       #js {:value nil :done true})))
 
 (defn es6-iterator
-  "EXPERIMENTAL: Return a ES2015 compatible iterator for coll."
+  "Return a ES2015+ compatible iterator for coll."
   [coll]
   (ES6Iterator. (seq coll)))
 
@@ -1341,7 +1340,7 @@
     _rest))
 
 (defn es6-iterator-seq
-  "EXPERIMENTAL: Given an ES2015 compatible iterator return a seq."
+  "Given an ES2015+ compatible iterator return a seq."
   [iter]
   (let [v (.next iter)]
     (if (.-done v)
@@ -4569,15 +4568,17 @@ reduces them without incurring seq initialization"
    atom before and after the reset."
   {:added "1.9"}
   [a new-value]
-  (let [validate (.-validator a)]
-    (when-not (nil? validate)
-      (when-not (validate new-value)
-        (throw (js/Error. "Validator rejected reference state"))))
-    (let [old-value (.-state a)]
-      (set! (.-state a) new-value)
-      (when-not (nil? (.-watches a))
-        (-notify-watches a old-value new-value))
-      [old-value new-value])))
+  (if (instance? Atom a)
+    (let [validate (.-validator a)]
+      (when-not (nil? validate)
+        (when-not (validate new-value)
+          (throw (js/Error. "Validator rejected reference state"))))
+      (let [old-value (.-state a)]
+        (set! (.-state a) new-value)
+        (when-not (nil? (.-watches a))
+          (-notify-watches a old-value new-value))
+        [old-value new-value]))
+    [(-deref a) (-reset! a new-value)]))
 
 (defn swap!
   "Atomically swaps the value of atom to be:
@@ -4608,13 +4609,21 @@ reduces them without incurring seq initialization"
   Returns [old new], the value of the atom before and after the swap."
   {:added "1.9"}
   ([a f]
-   (reset-vals! a (f (.-state a))))
+   (if (instance? Atom a)
+     (reset-vals! a (f (.-state a)))
+     [(-deref a) (-swap! a f)]))
   ([a f x]
-   (reset-vals! a (f (.-state a) x)))
+   (if (instance? Atom a)
+     (reset-vals! a (f (.-state a) x))
+     [(-deref a) (-swap! a f x)]))
   ([a f x y]
-   (reset-vals! a (f (.-state a) x y)))
+   (if (instance? Atom a)
+     (reset-vals! a (f (.-state a) x y))
+     [(-deref a) (-swap! a f x y)]))
   ([a f x y & more]
-   (reset-vals! a (apply f (.-state a) x y more))))
+   (if (instance? Atom a)
+     (reset-vals! a (apply f (.-state a) x y more))
+     [(-deref a) (-swap! a f x y more)])))
 
 (defn compare-and-set!
   "Atomically sets the value of atom to newval if and only if the
@@ -6658,7 +6667,6 @@ reduces them without incurring seq initialization"
       (.next ext-map-iter)))
   (remove [_] (js/Error. "Unsupported operation")))
 
-;; EXPERIMENTAL: subject to change
 (deftype ES6EntriesIterator [^:mutable s]
   Object
   (next [_]
@@ -6671,7 +6679,6 @@ reduces them without incurring seq initialization"
 (defn es6-entries-iterator [coll]
   (ES6EntriesIterator. (seq coll)))
 
-;; EXPERIMENTAL: subject to change
 (deftype ES6SetEntriesIterator [^:mutable s]
   Object
   (next [_]
@@ -6954,8 +6961,6 @@ reduces them without incurring seq initialization"
     (pr-str* coll))
   (equiv [this other]
     (-equiv this other))
-
-  ;; EXPERIMENTAL: subject to change
   (keys [coll]
     (es6-iterator (keys coll)))
   (entries [coll]
@@ -8070,8 +8075,6 @@ reduces them without incurring seq initialization"
     (pr-str* coll))
   (equiv [this other]
     (-equiv this other))
-
-  ;; EXPERIMENTAL: subject to change
   (keys [coll]
     (es6-iterator (keys coll)))
   (entries [coll]
@@ -8944,8 +8947,6 @@ reduces them without incurring seq initialization"
     (pr-str* coll))
   (equiv [this other]
     (-equiv this other))
-
-  ;; EXPERIMENTAL: subject to change
   (keys [coll]
     (es6-iterator (keys coll)))
   (entries [coll]
@@ -9374,8 +9375,6 @@ reduces them without incurring seq initialization"
     (pr-str* coll))
   (equiv [this other]
     (-equiv this other))
-
-  ;; EXPERIMENTAL: subject to change
   (keys [coll]
     (es6-iterator (seq coll)))
   (entries [coll]
@@ -9535,8 +9534,6 @@ reduces them without incurring seq initialization"
     (pr-str* coll))
   (equiv [this other]
     (-equiv this other))
-
-  ;; EXPERIMENTAL: subject to change
   (keys [coll]
     (es6-iterator (seq coll)))
   (entries [coll]

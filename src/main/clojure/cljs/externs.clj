@@ -75,7 +75,8 @@
               (let [qname (symbol (.. node getFirstChild getQualifiedName))]
                 (cond-> {:tag 'Function}
                   (.isConstructor info) (merge {:ctor qname})
-                  (.isInterface info) (merge {:iface qname})))
+                  (.isInterface info)   (merge {:iface qname})
+                  (.hasBaseType info)   (merge {:super (get-tag (.getBaseType info))})))
               (if (or (.hasReturnType info)
                       (as-> (.getParameterCount info) c
                         (and c (pos? c))))
