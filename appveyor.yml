@@ -72,5 +72,5 @@ test_script:
   # Since tests are currently only run in 2 JavaScript environments, look for exactly 2 counts of "0 failures, 0 errors."
   - cmd: powershell -noninteractive -noprofile -command if (-not ((sls -Pattern '0 failures, 0 errors.' -SimpleMatch test-out.txt).count -eq 2)) { exit 1 }
 
-# Don't actually build (MSBuild).
+# Skip the actual build (MSBuild).
 build: off
