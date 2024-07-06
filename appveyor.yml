@@ -35,7 +35,7 @@ install:
   - ps: Install-Product node $env:nodejs_version x64
   - ps: wget 'http://ftp.mozilla.org/pub/firefox/nightly/latest-mozilla-central/jsshell-win64.zip' -OutFile "$pwd\jsshell.zip"
   - ps: 7z x "-o$pwd\jsshell" jsshell.zip -r
-  - ps: wget 'https://aka.ms/chakracore/cc_windows_all_1_8_1' -OutFile "$pwd\chakra-core.zip"
+  - cmd: bash -cvx "curl -SL https://aka.ms/chakracore/install | bash"
   - ps: 7z x "-o$pwd\chakra-core" chakra-core.zip -r
   - ps: .\script\bootstrap.ps1
   - ps: "[Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8"
