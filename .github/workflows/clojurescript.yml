@@ -15,7 +15,7 @@ jobs:
     - name: Setup Clojure
       # You may pin to the exact commit or the version.
       # uses: DeLaGuardo/setup-clojure@0fc99a3bcdd086349bfb01a9262382fe3d37cd6d
-      uses: DeLaGuardo/setup-clojure@12.5
+      uses: DeLaGuardo/setup-clojure@12.6
       with:
         lein: latest
         boot: latest
