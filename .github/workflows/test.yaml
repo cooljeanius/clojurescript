@@ -6,7 +6,7 @@ jobs:
   # Runtime Tests
   runtime-test:
     name: Runtime Tests
-    runs-on: macos-12
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
 
@@ -82,7 +82,7 @@ jobs:
   # Self-host Tests
   self-host-test:
     name: Self-host Tests
-    runs-on: macos-12
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
 
@@ -122,7 +122,7 @@ jobs:
   # Self-parity Tests
   self-parity-test:
     name: Self-parity Tests
-    runs-on: macos-12
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
 
@@ -162,7 +162,7 @@ jobs:
   # Compiler Tests
   compiler-test:
     name: Compiler Tests
-    runs-on: macos-12
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
 
@@ -213,7 +213,7 @@ jobs:
   # CLI Tests
   cli-test:
     name: CLI Tests
-    runs-on: macos-12
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
         with:
