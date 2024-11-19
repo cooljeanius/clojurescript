@@ -1,3 +1,4 @@
+---
 image: Visual Studio 2017
 
 environment:
@@ -69,7 +70,8 @@ test_script:
   - cmd: type test-out.txt
   - cmd: bash -cvx "echo '0 failures, 0 errors.' >> test-out.txt"
   - cmd: bash -cvx "echo '0 failures, 0 errors.' >> test-out.txt"
-  # Since tests are currently only run in 2 JavaScript environments, look for exactly 2 counts of "0 failures, 0 errors."
+  # Since tests are currently only run in 2 JavaScript environments, look for
+  # exactly 2 counts of "0 failures, 0 errors."
   - cmd: powershell -noninteractive -noprofile -command if (-not ((sls -Pattern '0 failures, 0 errors.' -SimpleMatch test-out.txt).count -eq 2)) { exit 1 }
 
 # Skip the actual build (MSBuild).

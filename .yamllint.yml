@@ -1,0 +1,21 @@
+---
+# https://yamllint.readthedocs.io/en/stable/configuration.html
+extends: default
+
+rules:
+  float-values: enable
+  indentation:
+    ignore:
+      - .github/workflows/clojurescript.yml
+      - .github/workflows/release.yml
+  # some lines might be really long in this repo, and I don't feel like
+  # figuring out how to break them up:
+  line-length:
+    max: 99
+    level: warning
+    ignore:
+      - .github/workflows/clojurescript.yml
+      - .travis.yml
+      - appveyor.yml
+  octal-values: enable
+  truthy: disable
