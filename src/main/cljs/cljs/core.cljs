@@ -1458,6 +1458,11 @@
   (-hash [o]
     (goog/getUid o)))
 
+(extend-type symbol
+  IHash
+  (-hash [o]
+    (hash (.toString o))))
+
 ;;this is primitive because & emits call to array-seq
 (defn inc
   "Returns a number one greater than num."
@@ -2302,10 +2307,11 @@ reduces them without incurring seq initialization"
   "Return true if the seq function is supported for s"
   [s]
   (or
-   (nil? s)
-   (satisfies? ISeqable s)
-   (array? s)
-   (string? s)))
+    (nil? s)
+    (satisfies? ISeqable s)
+    (js-iterable? s)
+    (array? s)
+    (string? s)))
 
 (defn boolean
   "Coerce to boolean"
@@ -7828,15 +7834,13 @@ reduces them without incurring seq initialization"
 
   (inode-lookup [inode shift hash key not-found]
     (let [idx (hash-collision-node-find-index arr cnt key)]
-      (cond (< idx 0)              not-found
-            (key-test key (aget arr idx)) (aget arr (inc idx))
-            :else                  not-found)))
+      (cond (< idx 0) not-found
+            :else     (aget arr (inc idx)))))
 
   (inode-find [inode shift hash key not-found]
     (let [idx (hash-collision-node-find-index arr cnt key)]
-      (cond (< idx 0)              not-found
-            (key-test key (aget arr idx)) (MapEntry. (aget arr idx) (aget arr (inc idx)) nil)
-            :else                  not-found)))
+      (cond (< idx 0) not-found
+            :else     (MapEntry. (aget arr idx) (aget arr (inc idx)) nil))))
 
   (inode-seq [inode]
     (create-inode-seq arr))
@@ -11883,10 +11887,17 @@ reduces them without incurring seq initialization"
     x))
 
 (defn test
-  "test [v] finds fn at key :test in var metadata and calls it,
-  presuming failure will throw exception"
+  "test [v] - if var, finds fn at key :test in var metadata, if function, finds
+  special test property. Calls it, presuming failure will throw exception.
+
+  Examples:
+
+  (test my-fn) ;; :ok
+  (test #'my-fn) ;; :ok"
   [v]
-  (let [f (.-cljs$lang$test v)]
+  (let [f (if (instance? Var v)
+            (-> v meta :test)
+            (some-> v .-cljs$lang$test))]
     (if f
       (do (f) :ok)
       :no-test)))

@@ -159,6 +159,7 @@
    :protocol-impl-recur-with-target true
    :single-segment-namespace true
    :munged-namespace true
+   :js-used-as-alias true
    :ns-var-clash true
    :non-dynamic-earmuffed-var true
    :extend-type-invalid-method-shape true
@@ -438,6 +439,10 @@
                  (munge))]
     (str "Namespace " name " contains a reserved JavaScript keyword,"
          " the corresponding Google Closure namespace will be munged to " munged)))
+
+(defmethod error-message :js-used-as-alias
+  [warning-type {:keys [spec] :as info}]
+  (str "In " (pr-str spec) ", the alias name js is reserved for JavaScript interop"))
 
 (defmethod error-message :ns-var-clash
   [warning-type {:keys [ns var] :as info}]
@@ -2994,6 +2999,9 @@
                 lib'       ((alias-type @aliases) alias)]
             (when (and (some? lib') (not= lib lib'))
               (throw (error env (parse-ns-error-msg spec ":as alias must be unique"))))
+            (when (= alias 'js)
+              (when-not (= lib (get-in @aliases [(if macros? :fns :macros) 'js])) ; warn only once
+                (warning :js-used-as-alias env {:spec spec})))
             (swap! aliases
               update-in [alias-type]
               conj [alias lib] (when js-module-provides [js-module-provides lib]))))
@@ -3946,8 +3954,12 @@
          :cljs [(identical? "clojure.repl" nstr) (find-macros-ns 'cljs.repl)])
      #?@(:clj  [(.contains nstr ".") (find-ns (symbol nstr))]
          :cljs [(goog.string/contains nstr ".") (find-macros-ns (symbol nstr))])
-     :else (some-> env :ns :require-macros (get (symbol nstr)) #?(:clj  find-ns
-                                                                  :cljs find-macros-ns)))))
+     :else
+     (or (some-> env :ns :require-macros (get (symbol nstr)) #?(:clj  find-ns
+                                                                :cljs find-macros-ns))
+       ;; single segment namespace case
+       #?(:clj  (find-ns (symbol nstr))
+          :cljs (find-macros-ns (symbol nstr)))))))
 
 (defn get-expander* [sym env]
   (when-not (or (some? (gets env :locals sym)) ; locals hide macros
