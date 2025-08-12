@@ -8,7 +8,7 @@ jobs:
     name: Runtime Tests
     runs-on: macos-13
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: DeLaGuardo/setup-clojure@12.6
         with:
@@ -63,7 +63,7 @@ jobs:
     name: Runtime Windows Tests
     runs-on: windows-2019
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: DeLaGuardo/setup-clojure@12.6
         with:
@@ -84,7 +84,7 @@ jobs:
     name: Self-host Tests
     runs-on: macos-13
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: DeLaGuardo/setup-clojure@12.6
         with:
@@ -124,7 +124,7 @@ jobs:
     name: Self-parity Tests
     runs-on: macos-13
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: DeLaGuardo/setup-clojure@12.6
         with:
@@ -164,7 +164,7 @@ jobs:
     name: Compiler Tests
     runs-on: macos-13
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: DeLaGuardo/setup-clojure@12.6
         with:
@@ -199,7 +199,7 @@ jobs:
     name: Compiler Windows Tests
     runs-on: windows-2019
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: DeLaGuardo/setup-clojure@12.6
         with:
@@ -215,7 +215,7 @@ jobs:
     name: CLI Tests
     runs-on: macos-13
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
